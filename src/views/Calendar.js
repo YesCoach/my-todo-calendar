@@ -58,12 +58,24 @@ export default Calendar = () => {
     );
   }
 
+  const onPressLeftArrow = () => {
+    const newSelectedDate = dayjs(selectedDate).subtract(1, 'month');
+    setSelectedDate(newSelectedDate)
+  }
+
+  const onPressRightArrow = () => {
+    const newSelectedDate = dayjs(selectedDate).add(1, 'month');
+    setSelectedDate(newSelectedDate)
+  }
+
   const listHeaderComponent = () => {
     const currentDateText = dayjs(selectedDate).format("YYYY.MM.DD");
     return (
       <View>
         <View style={{flexDirection: 'row', justifyContent: "center", alignContent: "center"}}>
-          <ArrowButton iconName={"arrow-left"} onprogress={()=>{}} />
+          <ArrowButton iconName={"arrow-left"} onPress={()=>{
+            onPressLeftArrow();
+          }} />
           <TouchableOpacity
             style={{justifyContent:'center', alignContent:'center'}}
             onPress={() => {
@@ -72,13 +84,15 @@ export default Calendar = () => {
           >
             <Text style={{fontSize:20, color: "#404040"}}>{currentDateText}</Text>
           </TouchableOpacity>
-          <ArrowButton iconName={"arrow-right"} onprogress={()=>{}} />
+          <ArrowButton iconName={"arrow-right"} onPress={()=>{
+            onPressRightArrow();
+          }} />
         </View>
         <View style={{flexDirection:'row'}}>
         {[0, 1, 2, 3, 4, 5, 6].map(day => {
           return (
             <Column
-                key={`day-${day}`}
+                key={`day-${day}`} 
                 text={getDayText(day)}
                 color={getDayColor(day)}
                 opacity={1}
@@ -96,7 +110,7 @@ export default Calendar = () => {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={columns}
-        keyExtractor={(_, index) => 'column-${index}'}
+        keyExtractor={(_, index) => `column-${index}`}
         numColumns={7}
         renderItem={renderItem}
         ListHeaderComponent={listHeaderComponent}
