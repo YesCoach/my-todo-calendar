@@ -4,6 +4,7 @@ import { runPracticeDayjs } from '../practice-dayjs';
 import { getCalendarColumns, getDayColor, getDayText } from '../utils';
 import { Column } from '../components/Column';
 import { ArrowButton } from '../components/ArrowButton';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import dayjs from 'dayjs';
 
@@ -11,6 +12,20 @@ export default Calendar = () => {
   const now = dayjs();
   const columns = getCalendarColumns(selectedDate);
   const [selectedDate, setSelectedDate] = useState(now);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = (date) => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    setSelectedDate(dayjs(date));
+    hideDatePicker();
+  };
 
   useEffect(() => {
     runPracticeDayjs();
@@ -49,7 +64,12 @@ export default Calendar = () => {
       <View>
         <View style={{flexDirection: 'row', justifyContent: "center", alignContent: "center"}}>
           <ArrowButton iconName={"arrow-left"} onprogress={()=>{}} />
-          <TouchableOpacity style={{justifyContent:'center', alignContent:'center'}}>
+          <TouchableOpacity
+            style={{justifyContent:'center', alignContent:'center'}}
+            onPress={() => {
+              showDatePicker();
+            }}  
+          >
             <Text style={{fontSize:20, color: "#404040"}}>{currentDateText}</Text>
           </TouchableOpacity>
           <ArrowButton iconName={"arrow-right"} onprogress={()=>{}} />
@@ -80,6 +100,12 @@ export default Calendar = () => {
         numColumns={7}
         renderItem={renderItem}
         ListHeaderComponent={listHeaderComponent}
+      />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode='date'
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
       />
     </SafeAreaView>
   );
