@@ -7,9 +7,6 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 export const runPracticeDayjs = () => {
-  const hour = new Date().getHours();
-  console.log('hour', hour);
-
   const now = dayjs("2022-11-04 16:01:30");
   console.log("===== Practice Dayjs =====");
   console.log(
