@@ -7,25 +7,27 @@ import { ArrowButton } from '../components/ArrowButton';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import dayjs from 'dayjs';
+import { useCalendar } from '../useCalendar';
 
 export default Calendar = () => {
+  
   const now = dayjs();
+
+  const {
+    selectedDate,
+    setSelectedDate,
+    isDatePickerVisible,
+    showDatePicker,
+    hideDatePicker,
+    handleConfirm,
+    subtract1Month,
+    add1Month
+} = useCalendar(now);
+
   const columns = getCalendarColumns(selectedDate);
-  const [selectedDate, setSelectedDate] = useState(now);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = (date) => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (date) => {
-    setSelectedDate(dayjs(date));
-    hideDatePicker();
-  };
+  const onPressLeftArrow = subtract1Month;
+  const onPressRightArrow = add1Month;
 
   useEffect(() => {
     runPracticeDayjs();
@@ -56,16 +58,6 @@ export default Calendar = () => {
         isSelected={isSelected}
     />
     );
-  }
-
-  const onPressLeftArrow = () => {
-    const newSelectedDate = dayjs(selectedDate).subtract(1, 'month');
-    setSelectedDate(newSelectedDate)
-  }
-
-  const onPressRightArrow = () => {
-    const newSelectedDate = dayjs(selectedDate).add(1, 'month');
-    setSelectedDate(newSelectedDate)
   }
 
   const listHeaderComponent = () => {
