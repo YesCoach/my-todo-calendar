@@ -2,7 +2,6 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-
 export const ArrowButton = ({iconName, onPress}) => {
     return (
       <TouchableOpacity

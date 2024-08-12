@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { runPracticeDayjs } from '../practice-dayjs';
 import { getCalendarColumns, getDayColor, getDayText } from '../utils';
@@ -7,9 +7,10 @@ import { ArrowButton } from '../components/ArrowButton';
 
 import dayjs from 'dayjs';
 
-export default Calculator = () => {
+export default Calendar = () => {
   const now = dayjs();
-  const columns = getCalendarColumns(now);
+  const columns = getCalendarColumns(selectedDate);
+  const [selectedDate, setSelectedDate] = useState(now);
 
   useEffect(() => {
     runPracticeDayjs();
@@ -17,19 +18,33 @@ export default Calculator = () => {
     console.log('columns', columns);
   }, []);
 
+  useEffect(() => { 
+    console.log('date:', selectedDate);
+  }, [selectedDate]);
+
   const renderItem = ({ item: date }) => {
     // dayjs로 감싸서, dayjs 라이브러리 기능 사용
     const dateText = dayjs(date).get('date');
     const day = dayjs(date).get('day');
     const color = getDayColor(day);
-    const isCurrentMonth = dayjs(date).isSame(now, 'month');
+    const isCurrentMonth = dayjs(date).isSame(selectedDate, 'month');
+    const isSelected = dayjs(date).isSame(selectedDate, 'date');
     return (
-      <Column text={dateText} color={color} opacity={isCurrentMonth ? 1 : 0.4} />
-    )
+    <Column
+        text={dateText}
+        color={color}
+        opacity={isCurrentMonth ? 1 : 0.4}
+        disabled={false}
+        onPress={() => {
+            setSelectedDate(date)
+        }}
+        isSelected={isSelected}
+    />
+    );
   }
 
   const listHeaderComponent = () => {
-    const currentDateText = dayjs(now).format("YYYY.MM.DD");
+    const currentDateText = dayjs(selectedDate).format("YYYY.MM.DD");
     return (
       <View>
         <View style={{flexDirection: 'row', justifyContent: "center", alignContent: "center"}}>
@@ -42,7 +57,14 @@ export default Calculator = () => {
         <View style={{flexDirection:'row'}}>
         {[0, 1, 2, 3, 4, 5, 6].map(day => {
           return (
-            <Column key={`day-${day}`} text={getDayText(day)} color={getDayColor(day)} opacity={1} />
+            <Column
+                key={`day-${day}`}
+                text={getDayText(day)}
+                color={getDayColor(day)}
+                opacity={1}
+                disabled={true}
+                onPress={()=>{}}
+            />
           )
         })}
         </View>
