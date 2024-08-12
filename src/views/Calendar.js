@@ -65,9 +65,12 @@ export default Calendar = () => {
     return (
       <View>
         <View style={{flexDirection: 'row', justifyContent: "center", alignContent: "center"}}>
-          <ArrowButton iconName={"arrow-left"} onPress={()=>{
-            onPressLeftArrow();
-          }} />
+          <ArrowButton
+            iconName={"arrow-left"}
+            onPress={()=>{
+              onPressLeftArrow();
+            }}
+          />
           <TouchableOpacity
             style={{justifyContent:'center', alignContent:'center'}}
             onPress={() => {
@@ -76,9 +79,12 @@ export default Calendar = () => {
           >
             <Text style={{fontSize:20, color: "#404040"}}>{currentDateText}</Text>
           </TouchableOpacity>
-          <ArrowButton iconName={"arrow-right"} onPress={()=>{
-            onPressRightArrow();
-          }} />
+          <ArrowButton
+            iconName={"arrow-right"}
+            onPress={()=>{
+              onPressRightArrow();
+            }}
+          />
         </View>
         <View style={{flexDirection:'row'}}>
         {[0, 1, 2, 3, 4, 5, 6].map(day => {
